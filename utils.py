@@ -5,6 +5,7 @@ import PyPDF2
 import json
 from pathlib import Path
 from typing import Optional
+from docx import Document
 
 def extract_text_from_pdf(pdf_path: str) -> str:
     """
@@ -26,9 +27,35 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     except Exception as e:
         raise Exception(f"Error extracting PDF: {str(e)}")
 
+def extract_text_from_docx(docx_path: str) -> str:
+    """
+    Extract text from a Word (.docx) file.
+    
+    Args:
+        docx_path: Path to the DOCX file
+        
+    Returns:
+        Extracted text from DOCX
+    """
+    try:
+        doc = Document(docx_path)
+        text = ""
+        for para in doc.paragraphs:
+            if para.text.strip():
+                text += para.text + "\n"
+        # Also extract text from tables if present
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    if cell.text.strip():
+                        text += cell.text + "\n"
+        return text
+    except Exception as e:
+        raise Exception(f"Error extracting DOCX: {str(e)}")
+
 def extract_text_from_file(file_path: str) -> str:
     """
-    Extract text from a file (TXT, PDF, or plain text).
+    Extract text from a file (TXT, PDF, DOCX, or plain text).
     
     Args:
         file_path: Path to the file
@@ -40,6 +67,8 @@ def extract_text_from_file(file_path: str) -> str:
     
     if file_ext == '.pdf':
         return extract_text_from_pdf(file_path)
+    elif file_ext == '.docx':
+        return extract_text_from_docx(file_path)
     elif file_ext in ['.txt', '.md']:
         with open(file_path, 'r', encoding='utf-8') as f:
             return f.read()

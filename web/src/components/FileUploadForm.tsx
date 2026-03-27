@@ -102,7 +102,7 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           </div>
           <div className="divider my-4"></div>
           <FileUploadArea
-            label="CV (PDF, TXT, MD)"
+            label="CV (PDF, DOCX, TXT, MD)"
             file={cvFile}
             onChange={setCvFile}
             disabled={!!cvText}
@@ -136,7 +136,7 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           </div>
           <div className="divider my-4"></div>
           <FileUploadArea
-            label="Job Posting (PDF, TXT, MD)"
+            label="Job Posting (PDF, DOCX, TXT, MD)"
             file={jobFile}
             onChange={setJobFile}
             disabled={!!jobText}
@@ -170,7 +170,7 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           </div>
           <div className="divider my-4"></div>
           <FileUploadArea
-            label="Company Info (PDF, TXT, MD)"
+            label="Company Info (PDF, DOCX, TXT, MD)"
             file={companyFile}
             onChange={setCompanyFile}
             disabled={!!companyText}

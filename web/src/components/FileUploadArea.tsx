@@ -74,7 +74,7 @@ export default function FileUploadArea({
           <input
             type="file"
             onChange={handleFileChange}
-            accept=".pdf,.txt,.md"
+            accept=".pdf,.txt,.md,.docx"
             className="hidden"
             disabled={disabled}
           />
@@ -89,7 +89,7 @@ export default function FileUploadArea({
                 Drag and drop or click to browse
               </p>
               <p className="text-xs text-gray-500 mt-2">
-                Supports: PDF, TXT, Markdown (Max 50MB)
+                Supports: PDF, DOCX, TXT, Markdown (Max 50MB)
               </p>
             </div>
           </div>
