@@ -33,7 +33,22 @@ except Exception as e:
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData()
+    // Parse the request data
+    let formData: FormData
+    try {
+      formData = await request.formData()
+    } catch (parseError) {
+      // If formData parsing fails, provide detailed error
+      console.error('FormData parsing error:', parseError)
+      return NextResponse.json(
+        { 
+          error: 'Invalid request format. Please ensure you are uploading files correctly. Content-Type should be multipart/form-data.',
+          details: parseError instanceof Error ? parseError.message : 'Unknown parsing error'
+        },
+        { status: 400 }
+      )
+    }
+
     const provider = formData.get('provider') as string
     const documentFormat = (formData.get('document_format') as string) || 'markdown'
     const tempDir = join(os.tmpdir(), `job-optimizer-${Date.now()}`)

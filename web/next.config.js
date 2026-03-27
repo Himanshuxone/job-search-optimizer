@@ -13,11 +13,18 @@ const nextConfig = {
     responseLimit: '100mb',
   },
 
-  // Headers for security
+  // Headers for security (excluding API upload endpoints)
   async headers() {
     return [
       {
-        source: '/api/:path*',
+        source: '/api/optimize',
+        headers: [
+          // Allow multipart/form-data for file uploads
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+        ],
+      },
+      {
+        source: '/api/:path((?!optimize).*)',
         headers: [
           { key: 'Content-Type', value: 'application/json' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },

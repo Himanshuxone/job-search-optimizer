@@ -18,17 +18,21 @@ export default function Home() {
       const response = await fetch('/api/optimize', {
         method: 'POST',
         body: formData,
+        // Don't set Content-Type header - let the browser handle it automatically
+        // The browser will set it to 'multipart/form-data; boundary=...'
       })
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to process files')
+        throw new Error(errorData.error || `Failed to process files (${response.status})`)
       }
 
       const data = await response.json()
       setResults(data)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      console.error('Submission error:', errorMessage)
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }
