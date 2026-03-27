@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import FileUploadArea from './FileUploadArea'
 import TextInputField from './TextInputField'
 import ProviderSelector from './ProviderSelector'
-import { Upload, FileText, Briefcase, Building2, Zap } from 'lucide-react'
 
 interface FileUploadFormProps {
   onSubmit: (formData: FormData) => Promise<void>
@@ -69,29 +68,31 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 animate-fadeIn">
+    <form onSubmit={handleSubmit} className="space-y-8 animate-fade-in-up">
       {/* Provider Selector */}
       <ProviderSelector value={provider} onChange={setProvider} />
 
       {/* Section Title */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3 mb-2">
-          <Zap className="w-6 h-6 text-blue-600" />
-          Upload Your Application Materials
-        </h2>
-        <p className="text-gray-600">Provide your CV, the target job description, and company information</p>
+      <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-2xl p-8 border border-blue-700/50 backdrop-blur-sm hover:border-purple-500/50 transition-all duration-300">
+        <div className="flex items-center gap-3 mb-3">
+          <i className="bi bi-lightning-charge-fill text-3xl text-yellow-400 animate-pulse"></i>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent font-display">
+            Upload Your Application Materials
+          </h2>
+        </div>
+        <p className="text-gray-300 text-lg ml-12">Provide your CV, the target job description, and company information</p>
       </div>
 
       {/* Three Column Layout for Uploads */}
       <div className="grid md:grid-cols-3 gap-6">
         {/* CV Section */}
-        <div className="column-card animate-slideInLeft">
+        <div className="card animate-fade-in-left">
           <div className="flex items-center gap-3 mb-4">
-            <div className="icon-box-blue">
-              <FileText className="w-6 h-6" />
+            <div className="icon-box-blue bg-blue-500/30 border border-blue-400/50">
+              <i className="bi bi-file-earmark-pdf text-xl"></i>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Your CV</h3>
+              <h3 className="text-lg font-bold text-blue-300 font-display">Your CV</h3>
               <p className="text-xs text-gray-500">Step 1 of 3</p>
             </div>
           </div>
@@ -104,10 +105,10 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           />
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-slate-700/50"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gradient-to-br from-gray-50 to-white text-gray-500 font-medium">or paste text</span>
+              <span className="px-2 bg-slate-800 text-gray-400 font-medium">or paste text</span>
             </div>
           </div>
           <TextInputField
@@ -119,13 +120,13 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
         </div>
 
         {/* Job Description Section */}
-        <div className="column-card animate-slideUp">
+        <div className="card animate-slide-in">
           <div className="flex items-center gap-3 mb-4">
-            <div className="icon-box-green">
-              <Briefcase className="w-6 h-6" />
+            <div className="icon-box-green bg-green-500/30 border border-green-400/50">
+              <i className="bi bi-briefcase text-xl"></i>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Job Description</h3>
+              <h3 className="text-lg font-bold text-green-300 font-display">Job Description</h3>
               <p className="text-xs text-gray-500">Step 2 of 3</p>
             </div>
           </div>
@@ -138,10 +139,10 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           />
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-slate-700/50"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gradient-to-br from-gray-50 to-white text-gray-500 font-medium">or paste text</span>
+              <span className="px-2 bg-slate-800 text-gray-400 font-medium">or paste text</span>
             </div>
           </div>
           <TextInputField
@@ -153,13 +154,13 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
         </div>
 
         {/* Company Info Section */}
-        <div className="column-card animate-slideInRight">
+        <div className="card animate-fade-in-right">
           <div className="flex items-center gap-3 mb-4">
-            <div className="icon-box-purple">
-              <Building2 className="w-6 h-6" />
+            <div className="icon-box-purple bg-purple-500/30 border border-purple-400/50">
+              <i className="bi bi-building text-xl"></i>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-800">Company Info</h3>
+              <h3 className="text-lg font-bold text-purple-300 font-display">Company Info</h3>
               <p className="text-xs text-gray-500">Step 3 of 3</p>
             </div>
           </div>
@@ -172,10 +173,10 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           />
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-slate-700/50"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gradient-to-br from-gray-50 to-white text-gray-500 font-medium">or paste text</span>
+              <span className="px-2 bg-slate-800 text-gray-400 font-medium">or paste text</span>
             </div>
           </div>
           <TextInputField
@@ -193,24 +194,36 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
           type="submit"
           disabled={loading}
           className={`btn-primary flex items-center gap-3 text-lg px-12 py-4 ${
-            loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-2xl'
+            loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 active:scale-95'
           } transition-all duration-300`}
         >
-          <Upload className={`w-6 h-6 ${loading ? 'animate-spin' : ''}`} />
+          <i className={`bi bi-cloud-arrow-up text-2xl ${loading ? 'animate-bounce' : ''}`}></i>
           <span>{loading ? 'Processing... This may take 1-3 minutes' : '✨ Optimize My Application'}</span>
         </button>
       </div>
 
       {/* Tips Section */}
-      <div className="bg-blue-50 rounded-xl p-6 border border-blue-200 border-dashed">
-        <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
-          <span className="text-lg">💡</span> Pro Tips
+      <div className="bg-gradient-to-br from-blue-950/50 to-purple-950/50 rounded-2xl p-6 border border-blue-700/50 border-dashed backdrop-blur-sm">
+        <h4 className="font-semibold text-blue-300 mb-3 flex items-center gap-2 font-display text-lg">
+          <i className="bi bi-lightbulb text-xl text-yellow-400"></i> Pro Tips
         </h4>
-        <ul className="space-y-2 text-sm text-blue-800">
-          <li>• Use <strong>Gemini</strong> for fastest processing (recommended)</li>
-          <li>• Text inputs are more reliable than file uploads</li>
-          <li>• Keep inputs focused and concise for better results</li>
-          <li>• Processing typically takes 1-3 minutes per application</li>
+        <ul className="space-y-2 text-sm text-gray-300">
+          <li className="flex items-start gap-2">
+            <i className="bi bi-check-circle-fill text-green-400 mt-0.5"></i>
+            <span>Use <strong>Gemini</strong> for fastest processing (recommended)</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <i className="bi bi-check-circle-fill text-green-400 mt-0.5"></i>
+            <span>Text inputs are more reliable than file uploads</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <i className="bi bi-check-circle-fill text-green-400 mt-0.5"></i>
+            <span>Keep inputs focused and concise for better results</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <i className="bi bi-check-circle-fill text-green-400 mt-0.5"></i>
+            <span>Processing typically takes 1-3 minutes per application</span>
+          </li>
         </ul>
       </div>
     </form>

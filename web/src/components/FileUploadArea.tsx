@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { Upload, X, CheckCircle, File } from 'lucide-react'
 
 interface FileUploadAreaProps {
   label: string
@@ -41,14 +40,14 @@ export default function FileUploadArea({
   return (
     <div className="w-full">
       {file ? (
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5 flex items-center justify-between shadow-md hover:shadow-lg transition-all duration-300">
+        <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border-2 border-green-500/50 rounded-xl p-5 flex items-center justify-between shadow-lg shadow-green-500/20 hover:shadow-xl hover:border-green-400 transition-all duration-300">
           <div className="flex items-center gap-4">
-            <div className="icon-box-green">
-              <CheckCircle className="w-6 h-6" />
+            <div className="icon-box-green bg-green-500/30 border border-green-400/50 scale-125">
+              <i className="bi bi-check-circle-fill text-lg text-green-400"></i>
             </div>
             <div>
-              <p className="font-bold text-green-900">{file.name}</p>
-              <p className="text-sm text-green-700 font-medium">
+              <p className="font-bold text-green-300 font-display">{file.name}</p>
+              <p className="text-sm text-green-200 font-medium">
                 ✓ {(file.size / 1024).toFixed(2)} KB • Ready to upload
               </p>
             </div>
@@ -56,10 +55,10 @@ export default function FileUploadArea({
           <button
             type="button"
             onClick={() => onChange(null)}
-            className="text-red-600 hover:text-red-800 p-2 hover:bg-red-50 rounded-full transition-all duration-200"
+            className="text-red-400 hover:text-red-300 p-2 hover:bg-red-500/20 rounded-full transition-all duration-200"
             title="Remove file"
           >
-            <X className="w-6 h-6" />
+            <i className="bi bi-x-circle-fill text-2xl"></i>
           </button>
         </div>
       ) : (
@@ -68,8 +67,8 @@ export default function FileUploadArea({
           onDrop={handleDrop}
           className={`border-3 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-300 ${
             disabled
-              ? 'bg-gray-100 border-gray-300 opacity-50 cursor-not-allowed'
-              : 'border-blue-400 hover:border-blue-600 hover:bg-blue-50 hover:shadow-lg'
+              ? 'bg-slate-800/30 border-slate-700 opacity-50 cursor-not-allowed'
+              : 'border-blue-500/50 hover:border-blue-400 hover:bg-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20'
           }`}
         >
           <input
@@ -80,13 +79,14 @@ export default function FileUploadArea({
             disabled={disabled}
           />
           <div className="flex flex-col items-center gap-3">
-            <div className={`p-3 rounded-full ${disabled ? 'bg-gray-200' : 'bg-blue-100'}`}>
-              <Upload className={`w-8 h-8 ${disabled ? 'text-gray-400' : 'text-blue-600'}`} />
+            <div className={`p-4 rounded-full transition-all duration-300 ${disabled ? 'bg-slate-800/50' : 'bg-blue-500/20 group-hover:bg-blue-500/30'}`}>
+              <i className={`bi bi-cloud-arrow-up text-4xl ${disabled ? 'text-slate-500' : 'text-blue-400'}`}></i>
             </div>
             <div>
-              <p className="font-bold text-gray-800 text-lg">{label}</p>
-              <p className="text-sm text-gray-600 mt-1 font-medium">
-                📌 Drag and drop or click to browse
+              <p className="font-bold text-gray-200 text-lg font-display">{label}</p>
+              <p className="text-sm text-gray-400 mt-1 font-medium flex items-center justify-center gap-1">
+                <i className="bi bi-arrow-left-right"></i>
+                Drag and drop or click to browse
               </p>
               <p className="text-xs text-gray-500 mt-2">
                 Supports: PDF, TXT, Markdown (Max 50MB)
