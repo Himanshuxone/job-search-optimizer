@@ -1,0 +1,12 @@
+# Vercel Build Configuration for Job Search Optimizer
+
+output:
+  directory: .next
+
+env:
+  - key: ANTHROPIC_API_KEY
+    value: $ANTHROPIC_API_KEY
+  - key: GEMINI_API_KEY
+    value: $GEMINI_API_KEY
+  - key: OPENAI_API_KEY
+    value: $OPENAI_API_KEY
