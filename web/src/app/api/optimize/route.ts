@@ -9,8 +9,8 @@ export const maxDuration = 300
 
 async function extractTextFromFile(filePath: string): Promise<string> {
   try {
-    // Use Python to extract text from files
-    const pythonScript = `
+    // Use Python to extract text from files using proper escaping
+    const pythonCode = `
 import sys
 sys.path.insert(0, '${join(process.cwd(), '..').replace(/\\/g, '\\\\')}')
 from utils import extract_text_from_file
@@ -18,16 +18,24 @@ try:
     text = extract_text_from_file('${filePath.replace(/\\/g, '\\\\')}')
     print(text)
 except Exception as e:
-    print(f"ERROR: {str(e)}", file=sys.stderr)
+    import traceback
+    traceback.print_exc()
     sys.exit(1)
 `
-    const result = execSync(`python -c "${pythonScript}"`, {
+    // Escape the Python code for shell execution
+    const escapedCode = pythonCode.replace(/"/g, '\\"').replace(/\$/g, '\\$').replace(/`/g, '\\`')
+    
+    const result = execSync(`python -c "${escapedCode}"`, {
       encoding: 'utf-8',
       cwd: join(process.cwd(), '..'),
+      stdio: ['pipe', 'pipe', 'pipe'],
     }).trim()
     return result
   } catch (error) {
-    throw new Error(`Failed to extract text from file: ${error}`)
+    if (error instanceof Error) {
+      throw new Error(`Failed to extract text from file: ${error.message}`)
+    }
+    throw error
   }
 }
 
@@ -121,7 +129,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Call Python agent
-      const pythonScript = `
+      const pythonCode = `
 import sys
 import json
 sys.path.insert(0, '${join(process.cwd(), '..').replace(/\\/g, '\\\\')}')
@@ -158,12 +166,17 @@ try:
     print(json.dumps(output))
     
 except Exception as e:
-    print(json.dumps({'error': str(e)}), file=sys.stderr)
+    print(json.dumps({'error': str(e)}))
+    import traceback
+    traceback.print_exc()
     sys.exit(1)
 `
+      
+      // Properly escape the Python code for shell execution
+      const escapedPythonCode = pythonCode.replace(/"/g, '\\"').replace(/\$/g, '\\$').replace(/`/g, '\\`')
 
       const result = JSON.parse(
-        execSync(`python -c "${pythonScript}"`, {
+        execSync(`python -c "${escapedPythonCode}"`, {
           encoding: 'utf-8',
           cwd: join(process.cwd(), '..'),
           maxBuffer: 10 * 1024 * 1024, // 10MB buffer

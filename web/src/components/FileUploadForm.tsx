@@ -71,33 +71,43 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 animate-fade-in-up">
-      {/* Provider Selector */}
-      <ProviderSelector value={provider} onChange={setProvider} />
-
-      {/* Document Format Selector */}
-      <DocumentFormatSelector value={documentFormat} onChange={setDocumentFormat} />
-      <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-2xl p-8 border border-blue-700/50 backdrop-blur-sm hover:border-purple-500/50 transition-all duration-300">
-        <div className="flex items-center gap-3 mb-3">
-          <i className="bi bi-lightning-charge-fill text-3xl text-yellow-400 animate-pulse"></i>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent font-display">
-            Upload Your Application Materials
-          </h2>
+    <form onSubmit={handleSubmit} className="space-y-12 animate-fade-in-up">
+      {/* Dynamic Header */}
+      <div className="relative flex flex-col items-center justify-center py-8">
+        <div className="absolute inset-0 flex justify-center items-center pointer-events-none select-none">
+          <div className="w-2/3 h-32 bg-gradient-to-r from-blue-800/30 via-purple-800/30 to-pink-800/30 blur-2xl rounded-full animate-blob opacity-40"></div>
         </div>
-        <p className="text-gray-300 text-lg ml-12">Provide your CV, the target job description, and company information</p>
+        <div className="flex items-center gap-4 z-10">
+          <i className="bi bi-stars text-4xl text-blue-400 animate-float"></i>
+          <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 bg-clip-text text-transparent font-display drop-shadow-lg">
+            Career Catalyst: AI Job Optimizer
+          </h1>
+        </div>
+        <p className="text-lg text-gray-300 mt-3 z-10">Upload your CV, job description, and company info to tailor your application with AI</p>
       </div>
 
-      {/* Three Column Layout for Uploads */}
-      <div className="grid md:grid-cols-3 gap-6">
+      {/* Animated Divider */}
+      <div className="w-full flex justify-center">
+        <div className="h-1 w-2/3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur-[2px] animate-fade-in-up"></div>
+      </div>
+
+      {/* Provider and Format Selectors */}
+      <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
+        <ProviderSelector value={provider} onChange={setProvider} />
+        <DocumentFormatSelector value={documentFormat} onChange={setDocumentFormat} />
+      </div>
+
+      {/* Upload Card Section */}
+      <div className="grid md:grid-cols-3 gap-8">
         {/* CV Section */}
-        <div className="card animate-fade-in-left">
+        <div className="card bg-gradient-to-br from-blue-900/60 via-blue-800/40 to-slate-900/60 border border-blue-700/40 shadow-xl shadow-blue-900/20 rounded-2xl p-6 backdrop-blur-xl hover:scale-[1.025] transition-all duration-300 animate-fade-in-left">
           <div className="flex items-center gap-3 mb-4">
-            <div className="icon-box-blue bg-blue-500/30 border border-blue-400/50">
-              <i className="bi bi-file-earmark-pdf text-xl"></i>
+            <div className="icon-box-blue bg-blue-500/30 border border-blue-400/50 shadow-md">
+              <i className="bi bi-file-earmark-pdf text-2xl text-blue-200"></i>
             </div>
             <div>
-              <h3 className="text-lg font-bold text-blue-300 font-display">Your CV</h3>
-              <p className="text-xs text-gray-500">Step 1 of 3</p>
+              <h3 className="text-lg font-bold text-blue-200 font-display tracking-wide">Your CV</h3>
+              <p className="text-xs text-blue-300">Step 1 of 3</p>
             </div>
           </div>
           <div className="divider my-4"></div>
