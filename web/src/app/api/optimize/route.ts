@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const provider = formData.get('provider') as string
+    const documentFormat = (formData.get('document_format') as string) || 'markdown'
     const tempDir = join(os.tmpdir(), `job-optimizer-${Date.now()}`)
 
     // Create temp directory
@@ -158,7 +159,60 @@ except Exception as e:
         return NextResponse.json({ error: result.error }, { status: 500 })
       }
 
-      return NextResponse.json(result)
+      // Format documents if a format other than markdown is requested
+      let formattedResult = result
+      if (documentFormat && documentFormat !== 'markdown') {
+        try {
+          const pythonFormatScript = `
+import sys
+import json
+sys.path.insert(0, '${join(process.cwd(), '..').replace(/\\/g, '\\\\')}')
+sys.path.insert(0, '${join(process.cwd(), '../..').replace(/\\/g, '\\\\')}')
+
+from utils.document_formatter import format_all_results
+
+try:
+    results = {
+        'tailored_cv': '''${result.tailored_cv.replace(/'/g, "\\'")}''',
+        'cover_letter': '''${result.cover_letter.replace(/'/g, "\\'")}''',
+        'interview_questions': '''${result.interview_questions.replace(/'/g, "\\'")}''',
+        'interview_prep_guide': '''${result.interview_prep_guide.replace(/'/g, "\\'")}''',
+        'skill_gaps': '''${result.skill_gaps.replace(/'/g, "\\'")}'''
+    }
+    
+    formatted_results = format_all_results(results, '${documentFormat}')
+    
+    output = {
+        'tailored_cv': formatted_results.get('tailored_cv', ''),
+        'cover_letter': formatted_results.get('cover_letter', ''),
+        'interview_questions': formatted_results.get('interview_questions', ''),
+        'interview_prep_guide': formatted_results.get('interview_prep_guide', ''),
+        'skill_gaps': formatted_results.get('skill_gaps', ''),
+        'format': '${documentFormat}'
+    }
+    print(json.dumps(output))
+except Exception as e:
+    print(json.dumps({'error': str(e)}), file=sys.stderr)
+    sys.exit(1)
+`
+          const formattedOutput = JSON.parse(
+            execSync(`python -c "${pythonFormatScript}"`, {
+              encoding: 'utf-8',
+              cwd: join(process.cwd(), '..'),
+              maxBuffer: 10 * 1024 * 1024,
+            }).trim()
+          )
+          
+          if (!formattedOutput.error) {
+            formattedResult = formattedOutput
+          }
+        } catch (formatError) {
+          console.warn('Document formatting failed, returning original results:', formatError)
+          // Return original results if formatting fails
+        }
+      }
+
+      return NextResponse.json(formattedResult)
     } finally {
       // Cleanup temp directory
       try {

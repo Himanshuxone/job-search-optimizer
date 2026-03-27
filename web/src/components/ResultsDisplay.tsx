@@ -9,6 +9,7 @@ interface ResultsDisplayProps {
     interview_questions?: string
     interview_prep_guide?: string
     skill_gaps?: string
+    format?: string
   }
   onNewSearch: () => void
 }
@@ -36,9 +37,37 @@ export default function ResultsDisplay({
     alert('✓ Copied to clipboard!')
   }
 
-  const downloadAsFile = (content: string, filename: string) => {
+  const getFileExtension = () => {
+    const formatMap: { [key: string]: string } = {
+      markdown: 'md',
+      txt: 'txt',
+      pdf: 'pdf',
+      docx: 'docx',
+      html: 'html',
+      json: 'json',
+    }
+    return formatMap[results.format || 'markdown'] || 'md'
+  }
+
+  const getMimeType = (extension: string) => {
+    const mimeTypes: { [key: string]: string } = {
+      md: 'text/markdown',
+      txt: 'text/plain',
+      pdf: 'application/pdf',
+      docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      html: 'text/html',
+      json: 'application/json',
+    }
+    return mimeTypes[extension] || 'text/plain'
+  }
+
+  const downloadAsFile = (content: string, baseFilename: string) => {
+    const extension = getFileExtension()
+    const filename = baseFilename.replace(/\.[^/.]+$/, '') + '.' + extension
+    const mimeType = getMimeType(extension)
+
     const element = document.createElement('a')
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content))
+    element.setAttribute('href', `data:${mimeType};charset=utf-8,` + encodeURIComponent(content))
     element.setAttribute('download', filename)
     element.style.display = 'none'
     document.body.appendChild(element)
@@ -52,7 +81,7 @@ export default function ResultsDisplay({
       title: 'Tailored CV',
       icon: 'bi-file-earmark-pdf',
       badge: '✨',
-      filename: 'tailored_cv.md',
+      filename: 'tailored_cv',
       color: 'from-blue-600 to-blue-700',
     },
     {
@@ -60,7 +89,7 @@ export default function ResultsDisplay({
       title: 'Cover Letter',
       icon: 'bi-envelope',
       badge: '💌',
-      filename: 'cover_letter.md',
+      filename: 'cover_letter',
       color: 'from-purple-600 to-purple-700',
     },
     {
@@ -68,7 +97,7 @@ export default function ResultsDisplay({
       title: 'Interview Questions',
       icon: 'bi-chat-dots',
       badge: '❓',
-      filename: 'interview_questions.md',
+      filename: 'interview_questions',
       color: 'from-green-600 to-green-700',
     },
     {
@@ -76,7 +105,7 @@ export default function ResultsDisplay({
       title: 'Interview Prep Guide',
       icon: 'bi-book',
       badge: '📚',
-      filename: 'interview_prep_guide.md',
+      filename: 'interview_prep_guide',
       color: 'from-orange-600 to-orange-700',
     },
     {
@@ -84,7 +113,7 @@ export default function ResultsDisplay({
       title: 'Skill Gaps Analysis',
       icon: 'bi-graph-up',
       badge: '📊',
-      filename: 'skill_gaps_analysis.json',
+      filename: 'skill_gaps_analysis',
       color: 'from-pink-600 to-pink-700',
     },
   ]
@@ -102,6 +131,12 @@ export default function ResultsDisplay({
         <p className="text-gray-300 text-lg">
           Your personalized job application materials are ready below
         </p>
+        {results.format && (
+          <p className="mt-4 flex justify-center items-center gap-2 text-blue-300 text-sm">
+            <i className="bi bi-file-earmark-arrow-down"></i>
+            Exporting as <span className="font-semibold uppercase">{results.format}</span>
+          </p>
+        )}
       </div>
 
       {/* Results Sections */}

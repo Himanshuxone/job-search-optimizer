@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import FileUploadArea from './FileUploadArea'
 import TextInputField from './TextInputField'
 import ProviderSelector from './ProviderSelector'
+import DocumentFormatSelector from './DocumentFormatSelector'
 
 interface FileUploadFormProps {
   onSubmit: (formData: FormData) => Promise<void>
@@ -17,6 +18,7 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
   const [jobText, setJobText] = useState('')
   const [companyText, setCompanyText] = useState('')
   const [provider, setProvider] = useState('gemini')
+  const [documentFormat, setDocumentFormat] = useState('markdown')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,6 +60,7 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
     }
 
     formData.append('provider', provider)
+    formData.append('document_format', documentFormat)
 
     setLoading(true)
     try {
@@ -72,7 +75,8 @@ export default function FileUploadForm({ onSubmit }: FileUploadFormProps) {
       {/* Provider Selector */}
       <ProviderSelector value={provider} onChange={setProvider} />
 
-      {/* Section Title */}
+      {/* Document Format Selector */}
+      <DocumentFormatSelector value={documentFormat} onChange={setDocumentFormat} />
       <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-2xl p-8 border border-blue-700/50 backdrop-blur-sm hover:border-purple-500/50 transition-all duration-300">
         <div className="flex items-center gap-3 mb-3">
           <i className="bi bi-lightning-charge-fill text-3xl text-yellow-400 animate-pulse"></i>
