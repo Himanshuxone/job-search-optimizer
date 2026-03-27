@@ -4,13 +4,8 @@ import { join } from 'path'
 import { execSync } from 'child_process'
 import os from 'os'
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
-}
+// Allow large payloads
+export const maxDuration = 300
 
 async function extractTextFromFile(filePath: string): Promise<string> {
   try {
